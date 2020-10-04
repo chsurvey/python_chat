@@ -1,12 +1,26 @@
 from socket import *
 
+def send(Sock):
+    msg=input(">>>")
+    Sock.send(msg.encode('utf-8'))
+
+def receive(Sock):
+    msg = Sock.recv(1024)
+    print(msg.decode('utf-8'))
+
+port = 8080
+
 serverSock = socket(AF_INET, SOCK_STREAM)
-serverSock.bind(('', 8080))
+serverSock.bind(('', port))
 serverSock.listen()
+
+print("%d번 포트 접속 시도중.."%(port))
 
 connectionSock, addr=serverSock.accept()
 
-msg=input("보낼 메시지 입력:")
+print("접속 성공(%s)"%(str(addr)))
 
-connectionSock.send(msg.encode('utf-8'))
-print("전송완료")
+while(True):
+    send(connectionSock)
+
+    receive(connectionSock)
