@@ -1,7 +1,7 @@
 from socket import *
 
-serverSock = socket(AF_INET, SOCK_STREAM)
-serverSock.bind(('', 8080))
-serverSock.listen()
+clientSock = socket(AF_INET, SOCK_STREAM)
+clientSock.connect(('127.0.0.1',8080))
 
-cliendSock, addr=serverSock.accept()
+msg = clientSock.recv(1024)
+print(msg.decode('utf-8'))
