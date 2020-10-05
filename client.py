@@ -1,4 +1,6 @@
-from socket import *
+import socket
+import threading
+import time
 
 def send(Sock):
     msg=input(">>>")
@@ -10,12 +12,15 @@ def receive(Sock):
 
 port = 8080
 
-clientSock = socket(AF_INET, SOCK_STREAM)
+clientSock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 clientSock.connect(('127.0.0.1',8080))
 
 print("접속 성공")
 
-while(True):
-    receive(clientSock)
+sender = threading.Thread(target=sender, args=(clientSock, ))
+receiver = threading.Thread(target=receive, args=(clientSock, ))
 
-    send(clientSock)
+
+while(True):
+    time.sleep(1)
+    pass

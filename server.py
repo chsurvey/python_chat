@@ -1,16 +1,20 @@
-from socket import *
+import socket
+import threading
+import time
 
 def send(Sock):
-    msg=input(">>>")
-    Sock.send(msg.encode('utf-8'))
+    while(True):
+        msg=input(">>>")
+        Sock.send(msg.encode('utf-8'))
 
 def receive(Sock):
-    msg = Sock.recv(1024)
-    print(msg.decode('utf-8'))
+    while(True):
+        msg = Sock.recv(1024)
+        print(msg.decode('utf-8'))
 
 port = 8080
 
-serverSock = socket(AF_INET, SOCK_STREAM)
+serverSock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 serverSock.bind(('', port))
 serverSock.listen()
 
@@ -20,7 +24,12 @@ connectionSock, addr=serverSock.accept()
 
 print("접속 성공(%s)"%(str(addr)))
 
-while(True):
-    send(connectionSock)
+sender = threading.Thread(target=send, args=(connectionSock,))
+receiver = threading.Thread(target=receive, args=(connectionSock,))
 
-    receive(connectionSock)
+sender.start()
+receiver.start()
+
+while(True):
+    time.sleep(1)
+    pass
