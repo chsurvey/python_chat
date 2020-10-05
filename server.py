@@ -1,20 +1,20 @@
-import socket
+from socket import *
 import threading
 import time
 
 def send(Sock):
     while(True):
-        msg=input(">>>")
+        msg = input()
         Sock.send(msg.encode('utf-8'))
 
 def receive(Sock):
     while(True):
         msg = Sock.recv(1024)
-        print(msg.decode('utf-8'))
+        print("클라이언트 : "+msg.decode('utf-8'))
 
 port = 8080
 
-serverSock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+serverSock = socket(AF_INET, SOCK_STREAM)
 serverSock.bind(('', port))
 serverSock.listen()
 
